@@ -9,6 +9,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    /* Need position relative for absolute positioning of floating text */
+    position: relative;
+    overflow: hidden; /* Hide overflowing text */
 }
 
 .container {
@@ -19,6 +22,8 @@ body {
     max-width: 800px;
     width: 100%;
     text-align: center;
+    z-index: 1; /* Ensure container is above floating text */
+    position: relative; /* Ensure z-index works */
 }
 
 header h1 {
@@ -47,4 +52,32 @@ footer {
     margin-top: 30px;
     font-size: 0.9em;
     color: #666666;
+}
+
+/* Style for the button */
+#interactButton {
+    background-color: #e74c3c; /* Red accent */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+#interactButton:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Style for floating text */
+.floating-text {
+    position: fixed; /* Use fixed to position relative to viewport */
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+    pointer-events: none; /* Allow clicking through text */
+    z-index: 0; /* Below the container */
+    white-space: nowrap; /* Prevent wrapping */
+    transition: transform 5s ease-out, opacity 5s ease-out; /* Smooth transition */
 }
