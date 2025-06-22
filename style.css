@@ -9,9 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Need position relative for absolute positioning of floating text */
-    position: relative;
-    overflow: hidden; /* Hide overflowing text */
+    overflow: hidden;
 }
 
 .container {
@@ -22,12 +20,12 @@ body {
     max-width: 800px;
     width: 100%;
     text-align: center;
-    z-index: 1; /* Ensure container is above floating text */
-    position: relative; /* Ensure z-index works */
+    position: relative;
+    z-index: 1;
 }
 
 header h1 {
-    color: #00aaff; /* 明日方舟主题蓝色 */
+    color: #00aaff;
     margin-bottom: 20px;
     border-bottom: 2px solid #00aaff;
     padding-bottom: 10px;
@@ -54,13 +52,12 @@ footer {
     color: #666666;
 }
 
-/* Style for the button */
 #interactButton {
-    background-color: #e74c3c; /* Red accent */
-    color: white;
-    border: none;
     padding: 10px 20px;
-    font-size: 1em;
+    font-size: 1.2em;
+    color: #1a1a1a;
+    background-color: #00aaff;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -68,16 +65,27 @@ footer {
 }
 
 #interactButton:hover {
-    background-color: #c0392b; /* Darker red on hover */
+    background-color: #0088cc;
 }
 
-/* Style for floating text */
 .floating-text {
-    position: fixed; /* Use fixed to position relative to viewport */
+    position: fixed;
     font-size: 2em;
-    color: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
-    pointer-events: none; /* Allow clicking through text */
-    z-index: 0; /* Below the container */
-    white-space: nowrap; /* Prevent wrapping */
-    transition: transform 5s ease-out, opacity 5s ease-out; /* Smooth transition */
+    font-weight: bold;
+    color: #f1c40f;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 1;
+    animation: float-across 5s ease-out forwards;
+}
+
+@keyframes float-across {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--translate-x), var(--translate-y));
+        opacity: 0;
+    }
 }
