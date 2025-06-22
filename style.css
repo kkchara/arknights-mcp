@@ -1,3 +1,5 @@
+/* style.css */
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #1a1a1a;
@@ -10,87 +12,143 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow: hidden; /* Prevent scrollbars from floating text */
+
+    /* -- 花里胡哨背景效果 -- */
+    background: linear-gradient(-45deg, #1a1a1a, #2c3e50, #1a1a1a, #34495e);
+    background-size: 400% 400%;
+    animation: gradientBackground 15s ease infinite;
+    position: relative; /* For absolute positioning of floating text */
 }
 
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+/* -- 背景效果结束 -- */
+
+
 .container {
-    background-color: #282828;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    background-color: rgba(40, 40, 40, 0.95); /* Semi-transparent background */
+    padding: 30px; /* Adjusted padding slightly */
+    border-radius: 10px; /* Adjusted border radius slightly */
+    /* -- 增强容器阴影/发光 -- */
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(0, 170, 255, 0.3); /* 蓝色发光效果 */
+    /* -- 增强容器阴影/发光结束 -- */
     max-width: 800px;
     width: 100%;
     text-align: center;
-    position: relative; /* Needed for stacking context */
     z-index: 1; /* Ensure container content is above floating text */
+    position: relative;
+    border: 1px solid rgba(0, 170, 255, 0.3); /* Subtle blue border */
 }
 
 header h1 {
     color: #00aaff; /* 明日方舟主题蓝色 */
     margin-bottom: 20px;
-    border-bottom: 2px solid #00aaff;
+    /* -- 标题下划线效果 -- */
+    border-bottom: 3px solid #00aaff; /* 更粗的下划线 */
+    /* -- 标题下划线效果结束 -- */
     padding-bottom: 10px;
+     text-shadow: 0 0 8px rgba(0, 170, 255, 0.7); /* Added glow to title */
+    font-size: 2.5em; /* Slightly larger title */
 }
 
 main p {
     margin-bottom: 15px;
+    color: #cccccc; /* Slightly lighter text */
 }
 
 .image-container {
-    margin: 20px 0;
+    margin: 20px 0; /* Adjusted margin */
+    /* -- 图像容器效果 -- */
+    border: 3px solid #00aaff; /* 蓝色边框 */
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4); /* 蓝色光晕 */
+    /* -- 图像容器效果结束 -- */
+    border-radius: 8px; /* Apply border-radius here as well */
+    overflow: hidden; /* Hide overflow if image is slightly larger than container */
 }
 
 .image-container img {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
-    border: 2px solid #00aaff;
+    border-radius: 8px; /* Keep image border radius */
+    border: none; /* Remove inner border if outer container has one */
+    display: block; /* Remove extra space below image */
 }
 
 footer {
-    margin-top: 30px;
+    margin-top: 30px; /* Adjusted margin */
     font-size: 0.9em;
-    color: #666666;
+    color: #666666; /* Adjusted color */
+    z-index: 1; /* Ensure footer is above floating text */
+    position: relative;
 }
 
 /* 新增按钮样式 */
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
+#floatTextButton {
+    margin-top: 20px; /* Adjusted margin */
+    padding: 12px 25px; /* 更大的内边距 */
     background-color: #e74c3c; /* 红色强调色 */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+    font-size: 1.2em; /* 更大的字体 */
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease; /* 添加transform过渡和box-shadow过渡 */
+    box-shadow: 0 5px 10px rgba(231, 76, 60, 0.4); /* 红色阴影 */
 }
 
-button:hover {
+#floatTextButton:hover {
     background-color: #c0392b;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.6); /* 鼠标悬停时阴影更明显 */
+}
+
+#floatTextButton:active {
+    transform: scale(0.98); /* 按下时轻微缩小 */
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); /* 按下时阴影减小 */
 }
 
 /* 新增飘动文字样式 */
 .floating-text {
     position: fixed; /* 相对于视口固定位置 */
-    bottom: -50px; /* 从屏幕下方开始 */
-    left: var(--start-left); /* 使用 CSS 变量控制随机水平位置 */
-    font-size: 1.5em; /* 文字大小 */
-    color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
+    /* bottom/top/left/right will be set by JS */
+    font-size: 1.8em; /* 文字大小 */
+    font-weight: bold;
+    color: rgba(241, 196, 15, 0.9); /* 黄色，稍微不透明 */
     pointer-events: none; /* 不捕获鼠标事件 */
-    opacity: 1;
-    animation: floatUp 5s ease-out forwards; /* 动画名称, 时长, 缓动函数, 结束时保持状态 */
+    opacity: 1; /* Start visible, animation controls fade */
+    /* -- 增强飘动动画 -- */
+    animation: floatAnimation 6s ease-out forwards; /* 动画名称, 时长, 缓动函数, 结束时保持状态 */
+    text-shadow: 0 0 8px rgba(241, 196, 15, 0.7); /* 文字光晕 */
+    /* -- 增强飘动动画结束 -- */
     z-index: 1000; /* 确保文字在最上层 */
     white-space: nowrap; /* 防止文字换行 */
+    /* Initial opacity can be controlled by animation keyframes */
 }
 
-/* 定义飘动动画 */
-@keyframes floatUp {
+/* 定义增强飘动动画 */
+@keyframes floatAnimation {
     0% {
-        transform: translateY(0); /* 初始位置 (y轴不变) */
-        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(0.8); /* 初始位置和状态 */
+        opacity: 0; /* Start fully transparent */
+    }
+    20% {
+         opacity: 0.9; /* Fade in quickly */
+         transform: translate(0, 0) rotate(0deg) scale(1); /* Reach normal size */
+    }
+    80% {
+         opacity: 0.9; /* Stay visible */
     }
     100% {
-        transform: translateY(-100vh); /* 向上飘动整个视口高度 */
+        transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--dr, 0deg)) scale(0.5); /* 向上飘动更多, 随机旋转, 缩小 */
         opacity: 0; /* 结束时完全透明 */
     }
 }
+

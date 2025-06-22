@@ -1,28 +1,53 @@
-console.log("罗德岛档案页面已加载.");
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("罗德岛档案页面已加载.");
 
-const floatButton = document.getElementById('floatButton');
-const container = document.body; // 将文字添加到 body 中
+    const floatTextButton = document.getElementById('floatTextButton');
+    const body = document.body;
 
-floatButton.addEventListener('click', () => {
-    const text = "23333";
-    const numberOfTexts = 15; // 每次点击生成15个文字
+    if (floatTextButton) { // Check if button exists
+        floatTextButton.addEventListener('click', () => {
+            const numberOfTexts = 30; // How many texts per click
+            for (let i = 0; i < numberOfTexts; i++) {
+                // Add a small delay between creating texts to make them scatter better initially
+                setTimeout(() => {
+                    createFloatingText('23333');
+                }, i * 50); // 50ms delay between each text creation
+            }
+        });
+    } else {
+        console.error("Button with ID 'floatTextButton' not found.");
+    }
 
-    for (let i = 0; i < numberOfTexts; i++) {
+
+    function createFloatingText(text) {
         const textElement = document.createElement('div');
         textElement.textContent = text;
         textElement.classList.add('floating-text');
 
-        // 设置随机水平位置 (例如，在视口宽度的 10% 到 90% 之间)
-        const randomLeft = Math.random() * 80 + 10; // 10vw to 90vw
-        textElement.style.setProperty('--start-left', `${randomLeft}vw`);
+        // Randomize initial position (within viewport)
+        const startLeft = Math.random() * window.innerWidth; // px
+        const startTop = Math.random() * window.innerHeight; // px
+        textElement.style.left = `${startX}px`;
+        textElement.style.top = `${startY}px`;
 
-        // 添加一个轻微的随机延迟，让文字不是同时开始飘
-        const randomDelay = Math.random() * 1; // up to 1 second delay
-        textElement.style.animationDelay = `${randomDelay}s`;
+        // Randomize animation duration and delay slightly (delay is handled in the loop)
+        const duration = Math.random() * 4 + 5; // 5-9 seconds total animation duration
+        textElement.style.animationDuration = `${duration}s`;
 
-        container.appendChild(textElement);
+        // Set random translation and rotation values via CSS variables for the animation end state
+        // These values determine *how far* and *in which direction* the text moves relative to its start position.
+        const dx = (Math.random() - 0.5) * window.innerWidth * 2; // Move up to 2 screen widths horizontally
+        const dy = (Math.random() - 0.5) * window.innerHeight * 2; // Move up to 2 screen heights vertically
+        const dr = (Math.random() - 0.5) * 720; // Rotate up to +/- 360 degrees
 
-        // 动画结束后移除元素，防止 DOM 节点过多
+        textElement.style.setProperty('--dx', `${dx}px`);
+        textElement.style.setProperty('--dy', `${dy}px`);
+        textElement.style.setProperty('--dr', `${dr}deg`);
+
+        body.appendChild(textElement);
+
+        // Remove element after the animation finishes (duration)
+        // Using animationend event is cleaner than setTimeout based on guessed duration+delay
         textElement.addEventListener('animationend', () => {
             textElement.remove();
         });
