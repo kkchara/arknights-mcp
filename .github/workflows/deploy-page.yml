@@ -1,0 +1,36 @@
+name: Deploy Static Page to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 当推送到 main 分支时触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 运行器
+    permissions:
+      contents: read # 允许读取仓库内容
+      pages: write # 允许写入 GitHub Pages
+      id-token: write # 允许 OpenID Connect 身份验证
+
+    environment:
+      name: github-pages # 指定部署环境为 github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # 设置部署成功后的页面 URL
+
+    steps:
+      - name: Checkout # 步骤：检出代码
+        uses: actions/checkout@v4
+
+      - name: Setup Pages # 步骤：设置 GitHub Pages 环境
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact # 步骤：上传静态文件作为部署 artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 指定包含静态文件的目录。
+          # 因为您的 index.html, style.css, script.js 都在仓库根目录，所以这里是 '.'
+          path: '.'
+
+      - name: Deploy to GitHub Pages # 步骤：部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
