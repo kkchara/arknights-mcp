@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow: hidden; /* Prevent scrollbars from floating text */
 }
 
 .container {
@@ -20,12 +20,12 @@ body {
     max-width: 800px;
     width: 100%;
     text-align: center;
-    position: relative;
-    z-index: 1;
+    position: relative; /* Needed for stacking context */
+    z-index: 1; /* Ensure container content is above floating text */
 }
 
 header h1 {
-    color: #00aaff;
+    color: #00aaff; /* 明日方舟主题蓝色 */
     margin-bottom: 20px;
     border-bottom: 2px solid #00aaff;
     padding-bottom: 10px;
@@ -52,40 +52,45 @@ footer {
     color: #666666;
 }
 
-#interactButton {
+/* 新增按钮样式 */
+button {
+    margin-top: 20px;
     padding: 10px 20px;
-    font-size: 1.2em;
-    color: #1a1a1a;
-    background-color: #00aaff;
+    background-color: #e74c3c; /* 红色强调色 */
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1.1em;
     transition: background-color 0.3s ease;
-    margin-top: 20px;
 }
 
-#interactButton:hover {
-    background-color: #0088cc;
+button:hover {
+    background-color: #c0392b;
 }
 
+/* 新增飘动文字样式 */
 .floating-text {
-    position: fixed;
-    font-size: 2em;
-    font-weight: bold;
-    color: #f1c40f;
-    pointer-events: none;
-    z-index: 1000;
+    position: fixed; /* 相对于视口固定位置 */
+    bottom: -50px; /* 从屏幕下方开始 */
+    left: var(--start-left); /* 使用 CSS 变量控制随机水平位置 */
+    font-size: 1.5em; /* 文字大小 */
+    color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
+    pointer-events: none; /* 不捕获鼠标事件 */
     opacity: 1;
-    animation: float-across 5s ease-out forwards;
+    animation: floatUp 5s ease-out forwards; /* 动画名称, 时长, 缓动函数, 结束时保持状态 */
+    z-index: 1000; /* 确保文字在最上层 */
+    white-space: nowrap; /* 防止文字换行 */
 }
 
-@keyframes float-across {
+/* 定义飘动动画 */
+@keyframes floatUp {
     0% {
-        transform: translate(0, 0);
+        transform: translateY(0); /* 初始位置 (y轴不变) */
         opacity: 1;
     }
     100% {
-        transform: translate(var(--translate-x), var(--translate-y));
-        opacity: 0;
+        transform: translateY(-100vh); /* 向上飘动整个视口高度 */
+        opacity: 0; /* 结束时完全透明 */
     }
 }
